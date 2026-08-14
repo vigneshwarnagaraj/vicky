@@ -385,6 +385,15 @@
         .project-media-grid figcaption {
             padding: 0.65rem 0.75rem; font-size: 0.69rem; line-height: 1.55; color: #6a7280;
         }
+        .project-visual-section {
+            margin: 1rem 0 1.45rem; padding-top: 0.2rem;
+        }
+        .project-visual-title {
+            font-size: 0.78rem; font-weight: 600; color: #2e3340; margin-bottom: 0.65rem;
+        }
+        .project-visual-note {
+            font-size: 0.75rem; color: #6a7280; line-height: 1.7; margin: -0.2rem 0 0.7rem;
+        }
         @media (max-width: 640px) {
             .project-media-grid { grid-template-columns: 1fr; }
             .project-media-grid figure.featured { grid-column: auto; }
@@ -1391,14 +1400,24 @@ const PROJECTS = [
         ],
         learning: 'This project showed how aerodynamic simulation data can be combined with surrogate modeling and optimization instead of repeatedly evaluating every possible design. I learned how airfoil geometry can be parameterized for machine-learning models, how GPR can approximate aerodynamic responses, and how Bayesian Optimization can search a constrained design space efficiently.',
         workflow: ['20 NACA airfoils', 'XFLR5 data', 'Polynomial geometry', 'GPR for Cl and Cd', 'Bayesian Optimization', '30 evaluations'],
-        media: [
-            { src: 'Assets/DDE/NACA 4418 airfoil Plot.png', alt: 'NACA 4418 airfoil geometry plot', caption: 'Airfoil geometry used in the surrogate-model dataset.' },
-            { src: 'Assets/DDE/NACA 2412 airfoil Plot.png', alt: 'NACA 2412 airfoil geometry plot', caption: 'Cambered NACA airfoil geometry used in the study.' },
-            { src: 'Assets/DDE/XFLR5 Plots for NACA 4418.png', alt: 'XFLR5 aerodynamic plots for NACA 4418', caption: 'XFLR5 aerodynamic data generation for NACA 4418.' },
-            { src: 'Assets/DDE/XFLR5 plots for Naca 2412.png', alt: 'XFLR5 aerodynamic plots for NACA 2412', caption: 'XFLR5 aerodynamic data generation for NACA 2412.' },
-            { src: 'Assets/DDE/BO Progress.png', alt: 'Bayesian Optimization progress over 30 objective evaluations', caption: 'Bayesian Optimization progress across the 30 objective evaluations.', featured: true },
-            { src: 'Assets/DDE/2D Contour Plot of BO Objective Function.png', alt: 'Two-dimensional contour plot of the Bayesian Optimization objective', caption: '2D representation of the Bayesian Optimization objective landscape.' },
-            { src: 'Assets/DDE/3D Surface Plot of BO Objective Function.png', alt: 'Three-dimensional surface plot of the Bayesian Optimization objective', caption: '3D visualization of the objective function across selected airfoil geometry parameters.' }
+        approachSections: [
+            { title: 'Airfoil Geometry', description: 'NACA profiles and polynomial geometry parameterization used as surrogate-model inputs.', images: [
+                { src: 'Assets/DDE/NACA 4418 airfoil Plot.png', alt: 'NACA 4418 airfoil geometry plot', caption: 'NACA 4418 geometry used in the surrogate-model dataset.' },
+                { src: 'Assets/DDE/NACA 2412 airfoil Plot.png', alt: 'NACA 2412 airfoil geometry plot', caption: 'NACA 2412 geometry used in the surrogate-model dataset.' }
+            ]},
+            { title: 'XFLR5 Aerodynamic Data', description: 'Lift and drag data generated across angle of attack for the selected profiles.', images: [
+                { src: 'Assets/DDE/XFLR5 Plots for NACA 4418.png', alt: 'XFLR5 aerodynamic plots for NACA 4418', caption: 'XFLR5 aerodynamic response for NACA 4418.' },
+                { src: 'Assets/DDE/XFLR5 plots for Naca 2412.png', alt: 'XFLR5 aerodynamic plots for NACA 2412', caption: 'XFLR5 aerodynamic response for NACA 2412.' }
+            ]}
+        ],
+        resultSections: [
+            { title: 'Bayesian Optimization', description: 'Optimization progress across the constrained 30-evaluation search.', images: [
+                { src: 'Assets/DDE/BO Progress.png', alt: 'Bayesian Optimization progress over 30 objective evaluations', caption: 'Optimization progress across 30 objective evaluations.', featured: true }
+            ]},
+            { title: 'Optimization Design Space', description: 'Objective landscape across selected airfoil geometry parameters.', images: [
+                { src: 'Assets/DDE/2D Contour Plot of BO Objective Function.png', alt: 'Two-dimensional contour plot of the Bayesian Optimization objective', caption: '2D objective-function landscape.' },
+                { src: 'Assets/DDE/3D Surface Plot of BO Objective Function.png', alt: 'Three-dimensional surface plot of the Bayesian Optimization objective', caption: '3D objective-function landscape.' }
+            ]}
         ]
     },
 
@@ -1457,16 +1476,28 @@ const PROJECTS = [
         ],
         learning: 'This project showed why modal-test results must be interpreted carefully rather than reduced to a single stiffness comparison. Natural frequencies, damping, mode shapes, mass distribution, boundary conditions, and attached components all influence measured response.',
         workflow: ['Test setup', '13 excitation locations', 'LabShop acquisition', 'FRF data', 'MATLAB + AMI', 'Modal comparison'],
-        media: [
-            { src: 'Assets/Modal Analysis/Newer Bike Used for Experimental Study.png', alt: 'Newer bicycle used in the experimental modal study', caption: 'Newer bicycle assembly used in the experimental study.' },
-            { src: 'Assets/Modal Analysis/Older Bike Used for Experimental Study.png', alt: 'Older bicycle used in the experimental modal study', caption: 'Older bicycle assembly used for comparison.' },
-            { src: 'Assets/Modal Analysis/Node Placements for older bike and similar location in new bike.png', alt: 'Thirteen impact-test node locations on the bicycle', caption: 'Excitation locations used consistently across both bicycle assemblies.', featured: true },
-            { src: 'Assets/Modal Analysis/Y-Axis AMI Process Plot.png', alt: 'Lateral Y-axis AMI frequency-response fit', caption: 'AMI processing of lateral frequency-response data.' },
-            { src: 'Assets/Modal Analysis/Z-Axis AMI Process Plot.png', alt: 'Vertical Z-axis AMI frequency-response fit', caption: 'AMI processing of vertical frequency-response data.' },
-            { src: 'Assets/Modal Analysis/Comparison of old & new mode shapes \u2013 red lines represent old bike modes.- Lateral Y Axis.png', alt: 'Comparison of lateral mode shapes for the two bicycles', caption: 'Comparison of identified lateral mode shapes.' },
-            { src: 'Assets/Modal Analysis/Comparison of old & new mode shapes \u2013 red lines represent old bike modes.- Vertical Z Axis.png', alt: 'Comparison of vertical mode shapes for the two bicycles', caption: 'Comparison of identified vertical mode shapes.' },
-            { src: 'Assets/Modal Analysis/Results of Viration Analysis on Y-Axis.png', alt: 'Lateral modal analysis results', caption: 'Reported lateral natural frequencies and damping ratios.' },
-            { src: 'Assets/Modal Analysis/Results of Viration Analysis on Z-Axis.png', alt: 'Vertical modal analysis results', caption: 'Reported vertical natural frequencies and damping ratios.' }
+        approachSections: [
+            { title: 'Experimental Setup', description: 'Two bicycle assemblies tested using the same SIMO impact-testing method.', images: [
+                { src: 'Assets/Modal Analysis/Newer Bike Used for Experimental Study.png', alt: 'Newer bicycle used in the experimental modal study', caption: 'Newer bicycle assembly used in the study.' },
+                { src: 'Assets/Modal Analysis/Older Bike Used for Experimental Study.png', alt: 'Older bicycle used in the experimental modal study', caption: 'Older bicycle assembly used for comparison.' }
+            ]},
+            { title: 'Measurement Strategy', description: 'Thirteen excitation locations applied consistently across both assemblies.', images: [
+                { src: 'Assets/Modal Analysis/Node Placements for older bike and similar location in new bike.png', alt: 'Thirteen impact-test node locations on the bicycle', caption: 'Impact-test excitation locations.', featured: true }
+            ]},
+            { title: 'Modal Parameter Extraction', description: 'MATLAB and AMI fits used to extract modal parameters from the measured response.', images: [
+                { src: 'Assets/Modal Analysis/Y-Axis AMI Process Plot.png', alt: 'Lateral Y-axis AMI frequency-response fit', caption: 'Lateral AMI frequency-response fit.' },
+                { src: 'Assets/Modal Analysis/Z-Axis AMI Process Plot.png', alt: 'Vertical Z-axis AMI frequency-response fit', caption: 'Vertical AMI frequency-response fit.' }
+            ]}
+        ],
+        resultSections: [
+            { title: 'Mode Shapes', description: 'Mode-dependent structural differences between the two bicycle assemblies.', images: [
+                { src: 'Assets/Modal Analysis/Comparison of old & new mode shapes \u2013 red lines represent old bike modes.- Lateral Y Axis.png', alt: 'Comparison of lateral mode shapes for the two bicycles', caption: 'Identified lateral mode-shape comparison.' },
+                { src: 'Assets/Modal Analysis/Comparison of old & new mode shapes \u2013 red lines represent old bike modes.- Vertical Z Axis.png', alt: 'Comparison of vertical mode shapes for the two bicycles', caption: 'Identified vertical mode-shape comparison.' }
+            ]},
+            { title: 'Quantitative Comparison', description: 'Reported natural frequencies and damping ratios in both measurement directions.', images: [
+                { src: 'Assets/Modal Analysis/Results of Viration Analysis on Y-Axis.png', alt: 'Lateral modal analysis results', caption: 'Lateral modal-analysis results.' },
+                { src: 'Assets/Modal Analysis/Results of Viration Analysis on Z-Axis.png', alt: 'Vertical modal analysis results', caption: 'Vertical modal-analysis results.' }
+            ]}
         ]
     },
 
@@ -1495,10 +1526,16 @@ const PROJECTS = [
             'Hypothesized that load and terrain would produce measurable posture and gait changes; these outcomes were not experimentally demonstrated.'
         ],
         learning: 'This project showed that developing a biomechanics experiment requires connecting an engineering concept to measurable human-motion outcomes. It also reinforced the importance of separating a promising wearable-system concept from conclusions that can only be made after experimental validation.',
-        workflow: ['Biomechanics problem', 'Research question', 'Instrumentation', 'IMU placement', 'Experimental conditions', 'Measured variables', 'ANOVA plan', 'Future concept'],
-        media: [
-            { src: 'Assets/Bio Mechanics of Human Movement/Xnes MVN Awinda.png', alt: 'Xsens MVN Awinda wearable IMU motion capture system', caption: 'Xsens MVN Awinda system investigated for posture and gait tracking in the proposed study.' },
-            { src: 'Assets/Bio Mechanics of Human Movement/Marker Placements.png', alt: 'Proposed wearable IMU placement locations for the biomechanics study', caption: 'Proposed IMU locations at spinal and lower-body landmarks.', featured: true }
+        approachSections: [
+            { title: 'Proposed Motion-Capture System', description: 'Wireless IMU motion capture selected for the proposed posture and gait measurements.', images: [
+                { src: 'Assets/Bio Mechanics of Human Movement/Xnes MVN Awinda.png', alt: 'Xsens MVN Awinda wearable IMU motion capture system', caption: 'Proposed Xsens MVN Awinda motion-capture system.', featured: true }
+            ]},
+            { title: 'Planned IMU Placement', description: 'Proposed spinal and lower-body sensor locations for the human-subject protocol.', images: [
+                { src: 'Assets/Bio Mechanics of Human Movement/Marker Placements.png', alt: 'Proposed wearable IMU placement locations for the biomechanics study', caption: 'Planned IMU locations for posture and gait measurement.', featured: true }
+            ]}
+        ],
+        resultSections: [
+            { title: 'Proposed Experimental Design', description: 'Planned methodology only; no participant testing or adaptive-system validation was completed.', diagram: ['Load + Terrain + Backpack Type', 'IMU + Force Plates', 'Repeated-Measures ANOVA', 'Biomechanical Outcomes'] }
         ]
     },
 
@@ -1528,14 +1565,26 @@ const PROJECTS = [
         ],
         learning: 'The first prototype revealed practical issues with slot geometry, TPU support removal, and component fit that were difficult to judge from CAD alone. Revising these features in the second design reinforced the importance of physical prototyping when integrating rigid and flexible materials.',
         workflow: ['3D scanning', 'CAD development', 'Design 1', 'Evaluate issues', 'Design 2', 'Final prototype'],
-        media: [
-            { src: 'Assets/Poly Add Manu/3D Scan of Right Shoe.png', alt: 'Structured-light 3D scan of the right sports shoe', caption: 'Structured-light scan used to capture shoe geometry.' },
-            { src: 'Assets/Poly Add Manu/CAD Model.png', alt: 'CAD model of the detachable shoe splash protector', caption: 'CAD geometry developed from the scanned profile.' },
-            { src: 'Assets/Poly Add Manu/Front Design 1 Print.png', alt: 'First rigid front-section prototype', caption: 'Design Iteration 1: initial slot-based connection concept.' },
-            { src: 'Assets/Poly Add Manu/Design 1 Sleeve.png', alt: 'First flexible sleeve prototype', caption: 'First TPU sleeve iteration used to identify fit and support-removal issues.' },
-            { src: 'Assets/Poly Add Manu/Design 2 front.png', alt: 'Revised rigid front splash-guard geometry', caption: 'Design Iteration 2: revised front geometry and slot mechanism.' },
-            { src: 'Assets/Poly Add Manu/Design 2 sleeve.png', alt: 'Revised flexible sleeve geometry', caption: 'Revised TPU sleeve for improved fit and alignment.' },
-            { src: 'Assets/Poly Add Manu/Final Prototype.png', alt: 'Final assembled PLA and TPU detachable splash protector on a sports shoe', caption: 'Final PLA\u2013TPU detachable splash protector assembled and fitted to the sports shoe.', featured: true }
+        approachSections: [
+            { title: 'Reverse Engineering', description: 'Structured-light scan used as the geometric reference for CAD development.', images: [
+                { src: 'Assets/Poly Add Manu/3D Scan of Right Shoe.png', alt: 'Structured-light 3D scan of the right sports shoe', caption: 'Structured-light scan of the shoe geometry.', featured: true }
+            ]},
+            { title: 'CAD Development', description: 'Surface and solid geometry developed from the scanned shoe profile.', images: [
+                { src: 'Assets/Poly Add Manu/CAD Model.png', alt: 'CAD model of the detachable shoe splash protector', caption: 'CAD model developed from the scanned profile.', featured: true }
+            ]},
+            { title: 'Design Iteration 1', description: 'Initial slot concept used to identify interlocking, support-removal, and fit limitations.', images: [
+                { src: 'Assets/Poly Add Manu/Front Design 1 Print.png', alt: 'First rigid front-section prototype', caption: 'Initial rigid front-section prototype.' },
+                { src: 'Assets/Poly Add Manu/Design 1 Sleeve.png', alt: 'First flexible sleeve prototype', caption: 'Initial TPU sleeve prototype.' }
+            ]},
+            { title: 'Design Iteration 2', description: 'Revised front and sleeve geometry improved fit, alignment, and connection.', images: [
+                { src: 'Assets/Poly Add Manu/Design 2 front.png', alt: 'Revised rigid front splash-guard geometry', caption: 'Revised rigid front geometry.' },
+                { src: 'Assets/Poly Add Manu/Design 2 sleeve.png', alt: 'Revised flexible sleeve geometry', caption: 'Revised TPU sleeve geometry.' }
+            ]}
+        ],
+        resultSections: [
+            { title: 'Final Prototype', description: 'Final separately printed PLA and TPU components assembled for simulated wet-condition evaluation.', images: [
+                { src: 'Assets/Poly Add Manu/Final Prototype.png', alt: 'Final assembled PLA and TPU detachable splash protector on a sports shoe', caption: 'Final assembled PLA\u2013TPU splash protector.', featured: true }
+            ]}
         ]
     },
 
@@ -1591,9 +1640,14 @@ const PROJECTS = [
             'Implemented path logging and blob tracking individually, while identifying integration limitations when operated together.'
         ],
         learning: 'Successful robotics integration depends on more than getting individual components to work independently. Sensor placement, reflectivity, motor behavior, camera processing, and software integration all affected performance, and complete-system testing exposed conflicts between simultaneous vision functions.',
-        workflow: ['LDR sensing', 'Arduino control', 'Motor response', 'Webcam at 10 Hz', 'OpenCV contours', '100-point path log', 'ROS visualization'],
-        media: [
-            { src: 'Assets/Intro To Robotics/Final Working Model.png', alt: 'Final working ROS line-following robot with webcam and LDR sensors', caption: 'Final working model used for black-tape line following and vision-based path logging.', featured: true }
+        overviewSections: [
+            { title: 'Final Experimental Setup', description: 'Working mobile-robot platform used for black-tape line following and vision-based path logging.', images: [
+                { src: 'Assets/Intro To Robotics/Final Working Model.png', alt: 'Final working ROS line-following robot with webcam and LDR sensors', caption: 'Final robot with LDR sensors and webcam.', featured: true }
+            ]}
+        ],
+        approachSections: [
+            { title: 'Control Architecture', description: 'Sensor-based feedback path used for the working line-following system.', diagram: ['LDR Sensors', 'Arduino', 'Proportional Motor Control', 'Motors'] },
+            { title: 'Vision / ROS Pipeline', description: 'Image-processing and trajectory-logging path used to publish annotated frames.', diagram: ['Webcam', 'OpenCV', 'HSV', 'Contours', 'Centroids', '100-Point Buffer', 'ROS Topic'] }
         ]
     },
 
@@ -1723,14 +1777,27 @@ function openModal(p) {
         const workflowHTML = (p.workflow || []).map((step, i, steps) =>
             `<span class="workflow-step">${step}</span>${i < steps.length - 1 ? '<span class="workflow-arrow" aria-hidden="true">&rarr;</span>' : ''}`
         ).join('');
-        const mediaHTML = (p.media || []).map(item => `
-            <figure class="${item.featured ? 'featured' : ''}">
-                <a href="${item.src.split('/').map(encodeURIComponent).join('/')}" target="_blank" rel="noopener" aria-label="Open full-size image: ${item.alt}">
-                    <img src="${item.src.split('/').map(encodeURIComponent).join('/')}" alt="${item.alt}" loading="lazy">
-                </a>
-                <figcaption>${item.caption}</figcaption>
-            </figure>`
-        ).join('');
+        const renderVisualSections = sections => (sections || []).map(section => {
+            const images = (section.images || []).map(item => `
+                <figure class="${item.featured ? 'featured' : ''}">
+                    <a href="${repositoryPath(item.src)}" target="_blank" rel="noopener" aria-label="Open full-size image: ${item.alt}">
+                        <img src="${repositoryPath(item.src)}" alt="${item.alt}" loading="lazy">
+                    </a>
+                    <figcaption>${item.caption}</figcaption>
+                </figure>`).join('');
+            const diagram = (section.diagram || []).map((step, i, steps) =>
+                `<span class="workflow-step">${step}</span>${i < steps.length - 1 ? '<span class="workflow-arrow" aria-hidden="true">&rarr;</span>' : ''}`
+            ).join('');
+            return `<section class="project-visual-section">
+                <h3 class="project-visual-title">${section.title}</h3>
+                ${section.description ? `<p class="project-visual-note">${section.description}</p>` : ''}
+                ${diagram ? `<div class="project-workflow">${diagram}</div>` : ''}
+                ${images ? `<div class="project-media-grid">${images}</div>` : ''}
+            </section>`;
+        }).join('');
+        const overviewVisuals = renderVisualSections(p.overviewSections);
+        const approachVisuals = renderVisualSections(p.approachSections);
+        const resultVisuals = renderVisualSections(p.resultSections);
 
         box.innerHTML = `
             <button class="modal-close-btn" onclick="closeModal()">&times;</button>
@@ -1741,16 +1808,16 @@ function openModal(p) {
                 <div style="margin-bottom:1.4rem;">
                     <p class="modal-label">Problem</p>
                     <p style="font-size:0.81rem;color:#2e3340;line-height:1.8;">${p.problem || ''}</p>
+                    ${overviewVisuals}
                 </div>
 
                 <div style="margin-bottom:1.4rem;">
                     <p class="modal-label">Approach</p>
                     <ul style="display:flex;flex-direction:column;gap:0.45rem;list-style:none;">${approachHTML}</ul>
+                    ${approachVisuals}
                 </div>
 
                 ${workflowHTML ? `<div><p class="modal-label">Engineering Workflow</p><div class="project-workflow">${workflowHTML}</div></div>` : ''}
-
-                ${mediaHTML ? `<div><p class="modal-label">Project Evidence</p><div class="project-media-grid">${mediaHTML}</div></div>` : ''}
 
                 <div style="margin-bottom:1.4rem;">
                     <p class="modal-label">Tools Used</p>
@@ -1760,6 +1827,7 @@ function openModal(p) {
                 <div style="margin-bottom:1.4rem;">
                     <p class="modal-label">${p.resultsLabel || 'Results'}</p>
                     <ul style="display:flex;flex-direction:column;gap:0.45rem;list-style:none;">${resultsHTML}</ul>
+                    ${resultVisuals}
                 </div>
 
                 <div style="padding:1rem;border-radius:8px;background:#eef0f3;border:1px solid rgba(0,0,0,0.08);margin-bottom:1.25rem;">
