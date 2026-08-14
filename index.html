@@ -265,10 +265,16 @@
         }
 
         /* ── Project card image ── */
-        .proj-img {
-            width: 100%; height: 148px;
-            object-fit: cover;
+        .proj-img, .proj-media {
+            width: 100%;
+            aspect-ratio: 16 / 10;
             border-radius: 8px 8px 0 0;
+            background: #f1f3f5;
+        }
+        .proj-img {
+            height: auto;
+            object-fit: contain;
+            object-position: center;
             opacity: 0.75;
             filter: grayscale(10%);
             transition: opacity 0.3s, filter 0.3s;
@@ -304,28 +310,6 @@
             color: #0284c7;
             border-color: rgba(2,132,199,0.4);
             background: rgba(2,132,199,0.06);
-        }
-
-        /* ── Target roles ── */
-        .role-group-label {
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase;
-            color: #8a909e; margin-bottom: 0.55rem;
-        }
-        .role-pill {
-            display: inline-block;
-            font-size: 0.75rem;
-            padding: 5px 13px;
-            border-radius: 6px;
-            background: #eef0f3;
-            border: 1px solid rgba(0,0,0,0.08);
-            color: #2e3340;
-            margin: 0.2rem;
-            transition: border-color 0.2s, color 0.2s;
-        }
-        .role-pill:hover {
-            border-color: rgba(2,132,199,0.3);
-            color: #0284c7;
         }
 
         /* ── Modal ── */
@@ -386,12 +370,17 @@
         }
         .project-media-grid figure {
             margin: 0; overflow: hidden; border: 1px solid rgba(0,0,0,0.08);
-            border-radius: 9px; background: #f7f8fa;
+            border-radius: 9px; background: #f7f8fa; display: flex; flex-direction: column;
         }
         .project-media-grid figure.featured { grid-column: 1 / -1; }
+        .project-media-grid figure > a {
+            width: 100%; aspect-ratio: 16 / 10; max-height: 430px;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden; background: #f1f3f5;
+        }
         .project-media-grid img {
-            width: 100%; height: auto; display: block; object-fit: contain;
-            background: #fff; cursor: zoom-in;
+            width: 100%; height: 100%; display: block; object-fit: contain;
+            object-position: center; background: #fff; cursor: zoom-in;
         }
         .project-media-grid figcaption {
             padding: 0.65rem 0.75rem; font-size: 0.69rem; line-height: 1.55; color: #6a7280;
@@ -399,7 +388,20 @@
         @media (max-width: 640px) {
             .project-media-grid { grid-template-columns: 1fr; }
             .project-media-grid figure.featured { grid-column: auto; }
+            .project-media-grid figure > a { max-height: 360px; }
         }
+
+        .cad-grid {
+            display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.1rem;
+        }
+        .cad-empty {
+            grid-column: 1 / -1; padding: 1.5rem; border: 1px dashed rgba(0,0,0,0.14);
+            border-radius: 10px; background: rgba(255,255,255,0.55); color: #6a7280;
+            font-size: 0.8rem; line-height: 1.7;
+        }
+        .skill-tags { display: flex; flex-wrap: wrap; gap: 0.38rem; }
+        @media (max-width: 900px) { .cad-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+        @media (max-width: 640px) { .cad-grid { grid-template-columns: 1fr; } }
 
         /* ── Cert modals ── */
         .cert-modal-box {
@@ -580,6 +582,7 @@
             <li><a href="#about">About</a></li>
             <li><a href="#experience">Experience</a></li>
             <li><a href="#projects">Projects</a></li>
+            <li><a href="#cad-models">CAD Models</a></li>
             <li><a href="#skills">Skills</a></li>
             <li><a href="#certifications">Certs</a></li>
             <li><a href="#contact">Contact</a></li>
@@ -593,6 +596,7 @@
     <a href="#about"          class="mob-link">About</a>
     <a href="#experience"     class="mob-link">Experience</a>
     <a href="#projects"       class="mob-link">Projects</a>
+    <a href="#cad-models"     class="mob-link">CAD &amp; Design Models</a>
     <a href="#skills"         class="mob-link">Skills</a>
     <a href="#certifications" class="mob-link">Certifications</a>
     <a href="#contact"        class="mob-link">Contact</a>
@@ -619,10 +623,9 @@
                 <!-- About -->
                 <div class="fu3" style="margin-bottom:1.75rem; padding: 1.25rem; background:#ffffff; border:1px solid rgba(0,0,0,0.08); border-radius:10px;">
                     <p style="font-size:0.82rem; color:#2e3340; line-height:1.8;">
-                        Mechanical engineering graduate student with practical experience across manufacturing lab operations,
-                        product design, simulation, and startup quality &amp; documentation work.
-                        Background spans additive manufacturing, CAD/FEA, experimental testing, quality systems, and data-driven analysis.
-                        Looking for full-time roles in engineering — open across manufacturing, product development, quality, R&amp;D, and operations — starting May 2026.
+                        Mechanical Engineering graduate with hands-on experience in product development, manufacturing, mechanical design,
+                        simulation, testing, and quality. I bring a practical engineering approach that combines CAD, prototyping, analysis,
+                        and iterative problem-solving to develop and improve real-world products and processes.
                     </p>
                 </div>
 
@@ -948,7 +951,7 @@
         <div id="projects-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(290px,1fr)); gap:1.1rem;">
 
         <div class="proj-card" data-category="ops" onclick="openModalById('sap-erpsim')">
-            <div style="width:100%;height:148px;border-radius:8px 8px 0 0;background:linear-gradient(135deg,#fff7e8,#eef6fb);display:flex;align-items:center;justify-content:center;">
+            <div class="proj-media" style="background:linear-gradient(135deg,#fff7e8,#eef6fb);display:flex;align-items:center;justify-content:center;">
                 <div style="text-align:center;"><div class="font-display" style="font-size:1.2rem;color:#8a5a10;margin-bottom:0.25rem;">SAP ERPsim</div><div class="font-mono" style="font-size:0.62rem;color:#6a7280;letter-spacing:0.1em;">ACADEMIC SIMULATION</div></div>
             </div>
             <div style="padding:1rem;">
@@ -1028,7 +1031,7 @@
         <!-- ─ qms-medical-device ─ -->
         <div class="proj-card" data-category="quality" onclick="openModalById('qms-medical-device')">
             <!-- QMS placeholder graphic — replaces broken external image -->
-            <div style="width:100%;height:148px;border-radius:8px 8px 0 0;overflow:hidden;background:#f0f4f8;display:flex;align-items:center;justify-content:center;position:relative;">
+            <div class="proj-media" style="overflow:hidden;background:#f0f4f8;display:flex;align-items:center;justify-content:center;position:relative;">
                 <svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;position:absolute;inset:0;">
                     <!-- Background -->
                     <rect width="320" height="148" fill="#eef2f7"/>
@@ -1083,123 +1086,34 @@
 
 <hr class="section-sep">
 
-<!-- ════════════════ SKILLS ════════════════ -->
-<section id="skills" style="padding: 72px 0;">
+<!-- ════════════════ CAD & DESIGN MODELS ════════════════ -->
+<section id="cad-models" style="padding:72px 0;">
     <div class="section-wrap">
-        <p class="eyebrow" style="margin-bottom:0.4rem;">Capabilities</p>
-        <h2 class="section-title" style="margin-bottom:2rem;">Core Competencies</h2>
-
-        <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:0.9rem;">
-
-            <div class="skill-card">
-                <h4 class="font-mono" style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:#0284c7;margin-bottom:0.7rem;">Quality Systems</h4>
-                <ul style="font-size:0.8rem;color:#2e3340;list-style:none;display:flex;flex-direction:column;gap:5px;line-height:1.5;">
-                    <li>ISO 9001 / 14001 / 13485</li>
-                    <li>PFMEA &amp; Risk Analysis</li>
-                    <li>Internal Audits &amp; CAPA</li>
-                    <li>Lean Six Sigma (SSGB)</li>
-                </ul>
-            </div>
-
-            <div class="skill-card">
-                <h4 class="font-mono" style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:#0284c7;margin-bottom:0.7rem;">Manufacturing</h4>
-                <ul style="font-size:0.8rem;color:#2e3340;list-style:none;display:flex;flex-direction:column;gap:5px;line-height:1.5;">
-                    <li>CNC Machining &amp; CAM</li>
-                    <li>Additive Manufacturing</li>
-                    <li>Process Validation</li>
-                    <li>GD&amp;T Application</li>
-                    <li>Casting, Welding, Forging</li>
-                </ul>
-            </div>
-
-            <div class="skill-card">
-                <h4 class="font-mono" style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:#0284c7;margin-bottom:0.7rem;">CAD &amp; Analysis</h4>
-                <ul style="font-size:0.8rem;color:#2e3340;list-style:none;display:flex;flex-direction:column;gap:5px;line-height:1.5;">
-                    <li>SolidWorks &amp; PTC Creo</li>
-                    <li>ANSYS (FEA / Thermal / CFD)</li>
-                    <li>Design-for-Manufacturing</li>
-                    <li>Modal &amp; Vibration Analysis</li>
-                    <li>ROS 2</li>
-                    <li>Catia</li>
-                    <li>AutoCAD</li>
-                </ul>
-            </div>
-
-            <div class="skill-card">
-                <h4 class="font-mono" style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:#0284c7;margin-bottom:0.7rem;">Statistical Methods</h4>
-                <ul style="font-size:0.8rem;color:#2e3340;list-style:none;display:flex;flex-direction:column;gap:5px;line-height:1.5;">
-                    <li>Statistical Process Control</li>
-                    <li>Minitab &amp; JMP</li>
-                    <li>Process Capability (Cp/Cpk)</li>
-                    <li>DOE Fundamentals</li>
-                </ul>
-            </div>
-
-            <div class="skill-card">
-                <h4 class="font-mono" style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:#0284c7;margin-bottom:0.7rem;">Data &amp; Programming</h4>
-                <ul style="font-size:0.8rem;color:#2e3340;list-style:none;display:flex;flex-direction:column;gap:5px;line-height:1.5;">
-                    <li>Python &amp; MATLAB</li>
-                    <li>MS Excel (Advanced)</li>
-                    <li>Data Visualisation</li>
-                    <li>Surrogate Modelling</li>
-                </ul>
-            </div>
-
-            <div class="skill-card">
-                <h4 class="font-mono" style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:#0284c7;margin-bottom:0.7rem;">PLM &amp; ERP</h4>
-                <ul style="font-size:0.8rem;color:#2e3340;list-style:none;display:flex;flex-direction:column;gap:5px;line-height:1.5;">
-                    <li>PTC Windchill (PLM)</li>
-                    <li>SAP ERP Fundamentals</li>
-                    <li>Change Mgmt (ECN/ECO)</li>
-                    <li>Technical Documentation</li>
-                    <li>Engineering Drawings</li>
-                </ul>
-            </div>
-
-            <div class="skill-card">
-                <h4 class="font-mono" style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:#0284c7;margin-bottom:0.7rem;">Supply Chain &amp; Ops</h4>
-                <ul style="font-size:0.8rem;color:#2e3340;list-style:none;display:flex;flex-direction:column;gap:5px;line-height:1.5;">
-                    <li>Supplier Documentation</li>
-                    <li>NPI Coordination</li>
-                    <li>Procurement Basics</li>
-                    <li>Demand Planning</li>
-                    <li>Logistics Fundamentals</li>
-                </ul>
-            </div>
-
-            <div class="skill-card">
-                <h4 class="font-mono" style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:#0284c7;margin-bottom:0.7rem;">Cross-functional</h4>
-                <ul style="font-size:0.8rem;color:#2e3340;list-style:none;display:flex;flex-direction:column;gap:5px;line-height:1.5;">
-                    <li>Audit Preparation</li>
-                    <li>Work Instruction Writing</li>
-                    <li>Cross-functional Teamwork</li>
-                    <li>Customer Communication</li>
-                    <li>Supplier Coordination</li>
-                </ul>
-            </div>
-
-        </div>
+        <p class="eyebrow" style="margin-bottom:0.4rem;">Model Showcase</p>
+        <h2 class="section-title" style="margin-bottom:0.6rem;">CAD &amp; Design Models</h2>
+        <p style="font-size:0.8rem;color:#6a7280;line-height:1.7;margin-bottom:1.75rem;max-width:680px;">
+            Standalone part and assembly models, presented separately from full engineering case studies.
+        </p>
+        <div class="cad-grid" id="cad-grid" aria-live="polite"></div>
     </div>
 </section>
 
 <hr class="section-sep">
 
-<!-- ════════════════ TARGET ROLES ════════════════ -->
-<section id="target-roles" style="padding: 72px 0;">
+<!-- ════════════════ SKILLS ════════════════ -->
+<section id="skills" style="padding: 72px 0;">
     <div class="section-wrap">
-        <p class="eyebrow" style="margin-bottom:0.4rem;">Availability</p>
-        <h2 class="section-title" style="margin-bottom:0.6rem;">Open to Opportunities</h2>
-        <p style="font-size:0.82rem; color:#6a7280; margin-bottom:2rem; font-family:'IBM Plex Mono',monospace;">
-            Graduating May 2026 · Full-time · Authorized to work in the US · Open to relocation
-        </p>
+        <p class="eyebrow" style="margin-bottom:0.4rem;">Engineering Toolkit</p>
+        <h2 class="section-title" style="margin-bottom:2rem;">Technical Skills</h2>
 
-        <div style="background:#ffffff; border:1px solid rgba(0,0,0,0.08); border-radius:12px; padding:1.75rem 2rem;">
-            <div style="display:flex; flex-wrap:wrap; gap:0.5rem; align-items:center;">
-                <span class="role-pill">Manufacturing Engineer</span>
-                <span class="role-pill">Mechanical Engineer</span>
-                <span class="role-pill">CFD / Simulation Engineer</span>
-                <span class="role-pill">Quality Engineer</span>
-            </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:0.9rem;">
+            <div class="skill-card"><h4 class="font-mono" style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:#0284c7;margin-bottom:0.8rem;">CAD &amp; Product Development</h4><div class="skill-tags"><span class="tag">SolidWorks</span><span class="tag">Fusion 360</span><span class="tag">Reverse Engineering</span><span class="tag">3D Scanning</span><span class="tag">Parametric CAD</span><span class="tag">Tooling Design</span><span class="tag">Design for Additive Manufacturing</span><span class="tag">Iterative Prototyping</span></div></div>
+            <div class="skill-card"><h4 class="font-mono" style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:#0284c7;margin-bottom:0.8rem;">Manufacturing</h4><div class="skill-tags"><span class="tag">FDM 3D Printing</span><span class="tag">PLA / TPU Printing</span><span class="tag">Composite Manufacturing</span><span class="tag">Carbon Fibre Hand Lay-Up</span><span class="tag">Glass Fibre Hand Lay-Up</span><span class="tag">CNC Machining</span><span class="tag">Casting</span><span class="tag">Welding</span><span class="tag">Manufacturing Processes</span></div></div>
+            <div class="skill-card"><h4 class="font-mono" style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:#0284c7;margin-bottom:0.8rem;">Simulation &amp; Analysis</h4><div class="skill-tags"><span class="tag">ANSYS Workbench</span><span class="tag">ANSYS Fluent</span><span class="tag">CFD</span><span class="tag">Conjugate Heat Transfer</span><span class="tag">Experimental Modal Analysis</span><span class="tag">FRF Analysis</span><span class="tag">Structural Dynamics</span><span class="tag">XFLR5</span></div></div>
+            <div class="skill-card"><h4 class="font-mono" style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:#0284c7;margin-bottom:0.8rem;">Quality &amp; Metrology</h4><div class="skill-tags"><span class="tag">QA Inspection</span><span class="tag">Engineering Drawings</span><span class="tag">GD&amp;T</span><span class="tag">ISO Documentation</span><span class="tag">PFMEA</span><span class="tag">Quality Management Systems</span><span class="tag">Alicona Surface Profilometry</span><span class="tag">Calypso 2021</span></div></div>
+            <div class="skill-card"><h4 class="font-mono" style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:#0284c7;margin-bottom:0.8rem;">Robotics &amp; Automation</h4><div class="skill-tags"><span class="tag">ROS / ROS2</span><span class="tag">OpenCV</span><span class="tag">Arduino</span><span class="tag">Raspberry Pi</span><span class="tag">PLC</span><span class="tag">B&amp;R Automation Studio</span><span class="tag">Sensor Integration</span><span class="tag">Proportional Control</span></div></div>
+            <div class="skill-card"><h4 class="font-mono" style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:#0284c7;margin-bottom:0.8rem;">Supply Chain &amp; Operations</h4><div class="skill-tags"><span class="tag">SAP ERP / ERPsim</span><span class="tag">Procurement Planning</span><span class="tag">Demand Forecasting</span><span class="tag">Inventory Management</span><span class="tag">Logistics</span><span class="tag">Stock Transfers</span><span class="tag">Production Coordination</span></div></div>
+            <div class="skill-card"><h4 class="font-mono" style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:#0284c7;margin-bottom:0.8rem;">Programming &amp; Engineering Computing</h4><div class="skill-tags"><span class="tag">MATLAB</span><span class="tag">Python</span><span class="tag">Excel</span></div></div>
         </div>
     </div>
 </section>
@@ -1408,6 +1322,22 @@
    SAP / ERPsim removed from here — moved to Experience section.
    category: 'cfd' | 'exp' | 'design' | 'robot' | 'quality'
 ──────────────────────────────────────────── */
+/*
+   Add future CAD entries here. Keep preview and file paths repository-relative.
+   Optional `technical` values should only contain verified model information.
+*/
+const CAD_MODELS = [
+    // {
+    //     name: 'Heat Exchanger Assembly',
+    //     description: 'Short, factual design description.',
+    //     preview: 'Assets/CAD/heat-exchanger.png',
+    //     alt: 'Rendered heat exchanger CAD assembly',
+    //     software: ['SolidWorks'],
+    //     technical: ['Assembly'],
+    //     file: 'Assets/CAD/heat-exchanger.SLDASM'
+    // }
+];
+
 const PROJECTS = [
 
     {
@@ -1706,6 +1636,35 @@ const CAT = {
     ops:    { label: 'Academic Simulation', cls: 'cat-ops' },
 };
 
+function repositoryPath(path) {
+    return path.split('/').map(encodeURIComponent).join('/');
+}
+
+function renderCADModels() {
+    const grid = document.getElementById('cad-grid');
+    if (!grid) return;
+    if (!CAD_MODELS.length) {
+        grid.innerHTML = '<div class="cad-empty"><strong style="color:#2e3340;">CAD showcase ready.</strong><br>Model cards will appear here when verified preview images and repository CAD files are added to the CAD_MODELS data array.</div>';
+        return;
+    }
+    grid.innerHTML = CAD_MODELS.map(model => {
+        const software = (model.software || []).map(item => `<span class="tag">${item}</span>`).join('');
+        const technical = (model.technical || []).map(item => `<span class="tag">${item}</span>`).join('');
+        const download = model.file ? `<a class="btn-ghost" href="${repositoryPath(model.file)}" download style="margin-top:0.9rem;">View / Download Model</a>` : '';
+        return `<article class="proj-card" style="cursor:default;">
+            <img class="proj-img" src="${repositoryPath(model.preview)}" alt="${model.alt}" loading="lazy">
+            <div style="padding:1rem;">
+                <div style="margin-bottom:0.5rem;"><span class="cat-pill cat-design">CAD Model</span></div>
+                <h3 style="font-size:0.88rem;font-weight:600;color:#111118;line-height:1.4;margin-bottom:0.5rem;">${model.name}</h3>
+                <p style="font-size:0.75rem;color:#6a7280;line-height:1.65;margin-bottom:0.75rem;">${model.description}</p>
+                <div class="skill-tags">${software}${technical}</div>${download}
+            </div>
+        </article>`;
+    }).join('');
+}
+
+renderCADModels();
+
 /* ── Filter tabs — show/hide static cards by data-category ── */
 document.getElementById('filter-tabs').addEventListener('click', function(e) {
     var tab = e.target.closest('.filter-tab');
@@ -1955,4 +1914,3 @@ handleMobileLayout();
 </script>
 </body>
 </html>
-
