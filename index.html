@@ -408,6 +408,12 @@
             border-radius: 10px; background: rgba(255,255,255,0.55); color: #6a7280;
             font-size: 0.8rem; line-height: 1.7;
         }
+        .cad-detail-view { margin-bottom: 1.3rem; }
+        .cad-detail-view figure { margin: 0; }
+        .cad-detail-side { max-width: 430px; margin-left: auto; margin-right: auto; }
+        .cad-detail-side > a { aspect-ratio: 4 / 5 !important; max-height: 560px !important; }
+        .cad-downloads { display: flex; flex-wrap: wrap; gap: 0.65rem; }
+        .cad-downloads .btn-primary, .cad-downloads .btn-ghost { min-height: 40px; }
         .skill-tags { display: flex; flex-wrap: wrap; gap: 0.38rem; }
         @media (max-width: 900px) { .cad-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
         @media (max-width: 640px) { .cad-grid { grid-template-columns: 1fr; } }
@@ -1336,15 +1342,36 @@
    Optional `technical` values should only contain verified model information.
 */
 const CAD_MODELS = [
-    // {
-    //     name: 'Heat Exchanger Assembly',
-    //     description: 'Short, factual design description.',
-    //     preview: 'Assets/CAD/heat-exchanger.png',
-    //     alt: 'Rendered heat exchanger CAD assembly',
-    //     software: ['SolidWorks'],
-    //     technical: ['Assembly'],
-    //     file: 'Assets/CAD/heat-exchanger.SLDASM'
-    // }
+    {
+        name: 'Finned Heat Exchanger / Radiator Assembly',
+        cardDescription: 'Finned heat-exchanger assembly featuring repeated cooling fins, interconnected tubing, end sections, and inlet/outlet geometry.',
+        description: 'SolidWorks assembly of a finned heat-exchanger/radiator geometry featuring repeated cooling fins, interconnected tubing, end sections, and inlet/outlet connections. The model was developed as the geometry for a heat-transfer and flow-simulation study.',
+        software: 'SolidWorks',
+        modelType: 'Assembly',
+        application: 'Heat-transfer / flow-simulation geometry',
+        tags: ['SolidWorks', 'Assembly Modeling', 'Mechanical Design', 'Heat Exchanger', 'CAD'],
+        thumbnail: 'Assets/CAD Models/Radiator/Radiator Isometric.PNG',
+        images: [
+            {
+                title: 'Isometric View',
+                src: 'Assets/CAD Models/Radiator/Radiator Isometric.PNG',
+                alt: 'Isometric CAD view of finned heat exchanger radiator assembly',
+                caption: 'Isometric view showing the finned core, interconnected tubing, end sections, and inlet/outlet geometry.',
+                primary: true
+            },
+            {
+                title: 'Side View',
+                src: 'Assets/CAD Models/Radiator/Radiator Side View.PNG',
+                alt: 'Side CAD view of finned heat exchanger radiator assembly showing fin spacing and tubing',
+                caption: 'Side profile showing fin spacing, tube routing, end sections, and inlet/outlet geometry.',
+                portrait: true
+            }
+        ],
+        downloads: [
+            { label: 'Download STEP', format: 'STEP Model', path: 'Assets/CAD Models/Radiator/Radiator V3.STEP', primary: true },
+            { label: 'Download STL', format: 'STL Model · Mesh Format', path: 'Assets/CAD Models/Radiator/Radiator V3.STL' }
+        ]
+    }
 ];
 
 const PROJECTS = [
@@ -1701,20 +1728,65 @@ function renderCADModels() {
         grid.innerHTML = '<div class="cad-empty"><strong style="color:#2e3340;">CAD showcase ready.</strong><br>Model cards will appear here when verified preview images and repository CAD files are added to the CAD_MODELS data array.</div>';
         return;
     }
-    grid.innerHTML = CAD_MODELS.map(model => {
-        const software = (model.software || []).map(item => `<span class="tag">${item}</span>`).join('');
-        const technical = (model.technical || []).map(item => `<span class="tag">${item}</span>`).join('');
-        const download = model.file ? `<a class="btn-ghost" href="${repositoryPath(model.file)}" download style="margin-top:0.9rem;">View / Download Model</a>` : '';
+    grid.innerHTML = CAD_MODELS.map((model, index) => {
+        const tags = (model.tags || []).slice(0, 3).map(item => `<span class="tag">${item}</span>`).join('');
+        const thumbnail = model.thumbnail || model.images?.[0]?.src;
+        const thumbnailAlt = model.images?.[0]?.alt || `${model.name} CAD model`;
         return `<article class="proj-card" style="cursor:default;">
-            <img class="proj-img" src="${repositoryPath(model.preview)}" alt="${model.alt}" loading="lazy">
+            <img class="proj-img" src="${repositoryPath(thumbnail)}" alt="${thumbnailAlt}" loading="lazy">
             <div style="padding:1rem;">
                 <div style="margin-bottom:0.5rem;"><span class="cat-pill cat-design">CAD Model</span></div>
                 <h3 style="font-size:0.88rem;font-weight:600;color:#111118;line-height:1.4;margin-bottom:0.5rem;">${model.name}</h3>
-                <p style="font-size:0.75rem;color:#6a7280;line-height:1.65;margin-bottom:0.75rem;">${model.description}</p>
-                <div class="skill-tags">${software}${technical}</div>${download}
+                <p class="font-mono" style="font-size:0.65rem;color:#0284c7;margin-bottom:0.6rem;">${model.software} · ${model.modelType}</p>
+                <p style="font-size:0.75rem;color:#6a7280;line-height:1.65;margin-bottom:0.75rem;">${model.cardDescription || model.description}</p>
+                <div class="skill-tags" style="margin-bottom:0.9rem;">${tags}</div>
+                <button class="btn-ghost" type="button" onclick="openCADModal(${index})">View Model</button>
             </div>
         </article>`;
     }).join('');
+}
+
+function openCADModal(index) {
+    const model = CAD_MODELS[index];
+    if (!model) return;
+    const overlay = document.getElementById('project-modal');
+    const box = document.getElementById('modal-content');
+    const images = (model.images || []).map(image => `
+        <section class="project-visual-section cad-detail-view ${image.portrait ? 'cad-detail-side' : ''}">
+            <h3 class="project-visual-title">${image.title}</h3>
+            <div class="project-media-grid">
+                <figure class="featured">
+                    <a href="${repositoryPath(image.src)}" target="_blank" rel="noopener" aria-label="Open full-size image: ${image.alt}">
+                        <img src="${repositoryPath(image.src)}" alt="${image.alt}" loading="lazy">
+                    </a>
+                    <figcaption>${image.caption}</figcaption>
+                </figure>
+            </div>
+        </section>`).join('');
+    const downloads = (model.downloads || []).map(item => `
+        <a class="${item.primary ? 'btn-primary' : 'btn-ghost'}" href="${repositoryPath(item.path)}" download>
+            ${item.label}<span class="font-mono" style="font-size:0.58rem;opacity:0.72;">${item.format}</span>
+        </a>`).join('');
+    box.innerHTML = `
+        <button class="modal-close-btn" onclick="closeModal()" aria-label="Close model details">&times;</button>
+        <div style="clear:both;padding:1.75rem 2rem;">
+            <span class="cat-pill cat-design" style="margin-bottom:0.9rem;display:inline-block;">CAD Model</span>
+            <h2 style="font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:700;color:#111118;line-height:1.3;margin-bottom:0.35rem;">${model.name}</h2>
+            <p class="font-mono" style="font-size:0.65rem;color:#0284c7;margin-bottom:1rem;">${model.software} · ${model.modelType} Modeling</p>
+            <p style="font-size:0.81rem;color:#2e3340;line-height:1.8;margin-bottom:1.25rem;">${model.description}</p>
+            ${images}
+            <div style="margin-bottom:1.4rem;">
+                <p class="modal-label">Model Information</p>
+                <div style="display:grid;gap:0.45rem;font-size:0.78rem;color:#2e3340;">
+                    <p><strong>Software:</strong> ${model.software}</p>
+                    <p><strong>Model Type:</strong> ${model.modelType}</p>
+                    <p><strong>Application:</strong> ${model.application}</p>
+                </div>
+            </div>
+            ${downloads ? `<div><p class="modal-label">Model Downloads</p><div class="cad-downloads">${downloads}</div></div>` : ''}
+        </div>`;
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
 }
 
 renderCADModels();
